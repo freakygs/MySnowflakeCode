@@ -3,15 +3,12 @@ RETURNS VARCHAR(100)
 LANGUAGE SQL
 EXECUTE AS CALLER
 AS
-
 DECLARE
 SQL_stmt varchar;
-
-BEGIN
+Begin
     SQL_stmt:='ALTER WAREHOUSE SET WAREHOUSE_SIZE= ' || :IN_WH_SIZE;
     execute immediate :SQL_Stmt;
     return :IN_WH_SIZE;
-    
 EXCEPTION
 WHEN statement_error THEN
     LET PROC_OP := SQLCODE || ': ' || SQLERRM;
