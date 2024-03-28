@@ -1,0 +1,49 @@
+import sqlparse
+import streamlit as st
+ 
+st.title("SQL Formatter")
+
+#TODO
+#Need to create this app with Public user so that everyone can access this
+
+sample_sql = """
+SELECT ds, NUM_active_companies
+from snowflake.account_usage.QUERY_HISTORY
+     WHERE true 
+  and MyFiltEr = 'value'
+ 
+limit 10;
+ 
+"""
+ 
+st.markdown("### Input")
+query = st.text_area(
+    "Input SQL to be formatted",
+    value=sample_sql.strip(),
+    height=200,
+    label_visibility="collapsed"
+)
+ 
+st.markdown("### Output ✨")
+with st.expander("Filters"):
+    comma_first = st.checkbox("Comma first", False)
+    left, right = st.columns(2)
+    keyword_case = left.selectbox("Keyword case", [ "upper","lower", "capitalize"], disabled=False, help="Help Documentation")
+    identifier_case = right.selectbox("Identifier case", ["upper","lower", "capitalize"], disabled=False, help="Help Documentation")
+ 
+ 
+st.code(
+    sqlparse.format(
+        query, 
+        reindent=True, 
+        keyword_case=keyword_case,
+        identifier_case=identifier_case,
+        use_space_around_operators=True,
+        comma_first=comma_first
+    ), 
+    "sql")
+ 
+st.write("This is using sqlparse.format - see  [docs](https://sqlparse.readthedocs.io/en/latest/api.html#sqlparse.format)")
+Pinned (0)
+No pinned objects
+Sorted by descending
